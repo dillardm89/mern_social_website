@@ -16,9 +16,9 @@ function App() {
       <MainNavigation />
       <main>
         <Routes>
-          <Route exact path='/' element={<Users />} />
-          <Route exact path='/:uid/places' element={<UserPlaces />} />
-          <Route exact path='/places/new' element={<NewPlace />} />
+          <Route path='/' element={<Users />} />
+          <Route path='/:uid/places' element={<UserPlaces />} />
+          <Route path='/places/new' element={<NewPlace />} />
           <Route path='/*' element={<Navigate replace to='/' />} />
         </Routes>
       </main>
