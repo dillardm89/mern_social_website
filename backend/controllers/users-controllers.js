@@ -3,17 +3,6 @@ const { validationResult } = require('express-validator')
 
 const HttpError = require('../models/http-error')
 
-let DUMMY_USERS = [
-  {
-    id: 'u1',
-    name: 'Marianne Dillard',
-    imageUrl:
-      'https://mariannedillard.com/wp-content/uploads/2023/07/IMG_0141-2small.jpg',
-    email: 'test@test.com',
-    password: 'password1234',
-  },
-]
-
 function getAllUsers(req, res, next) {
   res.status(201).json(DUMMY_USERS)
 }
