@@ -1,0 +1,14 @@
+[
+  {
+    "id": "",
+    "title": "",
+    "description": "",
+    "imageUrl": "",
+    "address": "",
+    "location": {
+      "lat": 0,
+      "lng": 0
+    },
+    "creator": ""
+  }
+]

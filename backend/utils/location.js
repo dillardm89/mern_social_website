@@ -28,7 +28,7 @@ async function getCoordsForAddress(address) {
   }
 
   if (!data || data.status === 'REQUEST_DENIED') {
-    console.log(data.error_message)
+    //console.log(data.error_message)
     coordinates = { lat: 40.7484405, lng: -73.9878584 }
     return [coordinates, address]
   }

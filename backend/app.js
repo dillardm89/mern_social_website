@@ -1,11 +1,14 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-
-const port = process.env.HOST_PORT
+const mongoose = require('mongoose')
 
 const HttpError = require('./models/http-error')
 const placesRoutes = require('./routes/places-routes')
 const usersRoutes = require('./routes/users-routes')
+
+const port = process.env.HOST_PORT
+const database = 'places'
+const mongoConnectString = `mongodb://localhost:27017/${database}`
 
 const app = express()
 app.use(bodyParser.json())
@@ -28,6 +31,13 @@ app.use((error, req, res, next) => {
   res.json({ message: error.message || 'An unknown error occurred.' })
 })
 
-app.listen(port, () => {
-  console.log(`App started on port: ${port}`)
-})
+mongoose
+  .connect(mongoConnectString)
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`App started on port: ${port}`)
+    })
+  })
+  .catch((error) => {
+    console.log(error)
+  })
