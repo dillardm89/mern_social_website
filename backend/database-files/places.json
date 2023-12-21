@@ -1,0 +1,16 @@
+[
+  {
+    "title": "Empire State Building",
+    "description": "One of the most famous sky scrapers in the world!",
+    "imageUrl": "https://media.timeout.com/images/101705309/1024/576/image.webp",
+    "address": "20 W 34th St, New York, NY 10001",
+    "creator": ""
+  },
+  {
+    "title": "Leaning Tower of Pisa",
+    "description": "Crazy four-degree leaning tower!",
+    "imageUrl": "https://www.usatoday.com/gcdn/-mm-/6cb0566daad6b8973e2c456e7a61df50f54939b5/c=0-117-1408-1994/local/-/media/2017/01/04/USATODAY/USATODAY/636191149244091355-GettyImages-537365893.jpg?width=600&height=800&fit=crop&format=pjpg&auto=webp",
+    "address": "Piazza del Duomo, 56126 Pisa PI, Italy",
+    "creator": ""
+  }
+]
