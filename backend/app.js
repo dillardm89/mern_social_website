@@ -8,7 +8,7 @@ const usersRoutes = require('./routes/users-routes')
 
 const port = process.env.HOST_PORT
 const database = 'places'
-const mongoConnectString = `mongodb://localhost:27017/${database}`
+const mongoConnectString = `mongodb://localhost:27017/${database}?replicaSet=rs1`
 
 const app = express()
 app.use(bodyParser.json())

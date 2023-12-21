@@ -1,9 +1,10 @@
-const uuid = require('uuid')
+const mongoose = require('mongoose')
 const { validationResult } = require('express-validator')
 
 const HttpError = require('../models/http-error')
 const { getCoordsForAddress } = require('../utils/location')
 const Place = require('../models/place')
+const User = require('../models/user')
 
 async function getPlacesByUserId(req, res, next) {
   const userId = req.params.uid
@@ -88,15 +89,40 @@ async function createPlace(req, res, next) {
     creator,
   })
 
+  let validUser
   try {
-    await createdPlace.save()
-    //console.log(`Place created successfully: ${createdPlace._id}`)
+    validUser = await User.findById(creator)
+    console.log(validUser.name)
   } catch (err) {
+    const error = new HttpError('Could not find user,.', 500)
+    return next(error)
+  }
+
+  if (!validUser) {
+    const error = new HttpError('Could not find user for provided ID.', 404)
+    return next(error)
+  }
+
+  try {
+    const newSession = await mongoose.startSession()
+    newSession.startTransaction()
+
+    await createdPlace.save({ session: newSession })
+    console.log(createdPlace.title)
+
+    validUser.places.push(createdPlace) //Mongoose adds only ID to user
+
+    await validUser.save({ session: newSession })
+
+    await newSession.commitTransaction()
+    console.log(`Place created successfully: ${createdPlace._id}`)
+  } catch (err) {
+    console.log(err)
     const error = new HttpError('Creating place failed, please try again.', 500)
     return next(error)
   }
 
-  res.status(201).json({ place: createdPlace })
+  res.status(201).json({ place: createdPlace.toObject({ getters: true }) })
 }
 
 async function updatePlace(req, res, next) {

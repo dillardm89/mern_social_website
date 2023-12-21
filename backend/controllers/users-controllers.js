@@ -1,13 +1,23 @@
-const uuid = require('uuid')
 const { validationResult } = require('express-validator')
 
 const HttpError = require('../models/http-error')
+const User = require('../models/user')
 
-function getAllUsers(req, res, next) {
-  res.status(201).json(DUMMY_USERS)
+async function getAllUsers(req, res, next) {
+  let allUsers
+  try {
+    allUsers = await User.find({}, 'name email imageUrl')
+  } catch (err) {
+    const error = new HttpError('Fetching users failed, please try again', 500)
+    return next(error)
+  }
+
+  res
+    .status(201)
+    .json({ users: allUsers.map((user) => user.toObject({ getters: true })) })
 }
 
-function signupUser(req, res, next) {
+async function signupUser(req, res, next) {
   const errors = validationResult(req)
 
   if (!errors.isEmpty()) {
@@ -19,38 +29,59 @@ function signupUser(req, res, next) {
 
   const { name, email, password } = req.body
 
-  const hasUser = DUMMY_USERS.find((u) => u.email == email)
-
-  if (hasUser) {
-    return next(
-      new HttpError('Could not create user, email already exists.', 422)
-    )
+  let existingUser
+  try {
+    existingUser = await User.findOne({ email: email })
+  } catch (err) {
+    const error = new HttpError('Could not find user.', 500)
+    return next(error)
   }
 
-  const createdUser = {
-    id: uuid.v4(),
+  if (existingUser) {
+    const error = new HttpError(
+      'Email exists already, please enter a different email or login instead.',
+      422
+    )
+    return next(error)
+  }
+
+  const createdUser = new User({
     name,
     email,
     password,
+    imageUrl:
+      'https://en.wikipedia.org/wiki/File:Angelina_Jolie_(48462859552)_(cropped).jpg',
+    places: [],
+  })
+
+  try {
+    await createdUser.save()
+    //console.log(`User created successfully: ${createdUser._id}`)
+  } catch (err) {
+    const error = new HttpError('User signup failed, please try again.', 500)
+    return next(error)
   }
 
-  DUMMY_USERS.push(createdUser)
-
-  res.status(201).json({ user: createdUser })
+  res.status(201).json({ user: createdUser.toObject({ getters: true }) })
 }
 
-function loginUser(req, res, next) {
+async function loginUser(req, res, next) {
   const { email, password } = req.body
 
-  const identifiedUser = DUMMY_USERS.find((u) => u.email === email)
+  let existingUser
+  try {
+    existingUser = await User.findOne({ email: email })
+  } catch (err) {
+    const error = new HttpError('Could not find user.', 500)
+    return next(error)
+  }
 
-  if (!identifiedUser || identifiedUser.password !== password) {
-    return next(
-      new HttpError(
-        'Could not identify user, credentials seem to be wrong.',
-        401
-      )
+  if (!existingUser || existingUser.password !== password) {
+    const error = new HttpError(
+      'Invalid credentials, could not log you in.',
+      401
     )
+    return next(error)
   }
 
   res.json({ message: 'Logged In' })
