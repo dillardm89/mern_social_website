@@ -11,7 +11,7 @@ async function getPlacesByUserId(req, res, next) {
 
   let userPlaces
   try {
-    userPlaces = await Place.find({ creator: userId })
+    userPlaces = await User.findById(userId).populate('places')
   } catch (err) {
     const error = new HttpError(
       'Something went wrong, could not find user.',
@@ -20,7 +20,7 @@ async function getPlacesByUserId(req, res, next) {
     return next(error)
   }
 
-  if (!userPlaces || userPlaces.length === 0) {
+  if (!userPlaces || userPlaces.places.length === 0) {
     const error = new HttpError(
       'Could not find a place(s) for the provided user ID.',
       404
@@ -29,7 +29,7 @@ async function getPlacesByUserId(req, res, next) {
   }
 
   res.json({
-    places: userPlaces.map((place) => place.toObject({ getters: true })),
+    places: userPlaces.places.map((place) => place.toObject({ getters: true })),
   })
 }
 
@@ -92,9 +92,8 @@ async function createPlace(req, res, next) {
   let validUser
   try {
     validUser = await User.findById(creator)
-    console.log(validUser.name)
   } catch (err) {
-    const error = new HttpError('Could not find user,.', 500)
+    const error = new HttpError('Could not find a user.', 500)
     return next(error)
   }
 
@@ -108,16 +107,12 @@ async function createPlace(req, res, next) {
     newSession.startTransaction()
 
     await createdPlace.save({ session: newSession })
-    console.log(createdPlace.title)
 
-    validUser.places.push(createdPlace) //Mongoose adds only ID to user
-
+    validUser.places.push(createdPlace)
     await validUser.save({ session: newSession })
 
     await newSession.commitTransaction()
-    console.log(`Place created successfully: ${createdPlace._id}`)
   } catch (err) {
-    console.log(err)
     const error = new HttpError('Creating place failed, please try again.', 500)
     return next(error)
   }
@@ -154,7 +149,6 @@ async function updatePlace(req, res, next) {
 
   try {
     await updatedPlace.save()
-    //console.log(`Place updated successfully: ${updatedPlace.title}`)
   } catch (err) {
     const error = new HttpError('Something went wrong, could not update place.')
     return next(error)
@@ -168,7 +162,7 @@ async function deletePlace(req, res, next) {
 
   let deletedPlace
   try {
-    deletedPlace = await Place.findById(placeId)
+    deletedPlace = await Place.findById(placeId).populate('creator')
   } catch (err) {
     const error = new HttpError(
       'Something went wrong, could not find a place.',
@@ -177,10 +171,22 @@ async function deletePlace(req, res, next) {
     return next(error)
   }
 
+  if (!deletePlace) {
+    const error = new HttpError('Could not find place for this ID.', 404)
+    return next(error)
+  }
+
   try {
-    await deletedPlace.deleteOne()
-    //console.log('Place removed successfully')
+    const newSession = await mongoose.startSession()
+    newSession.startTransaction()
+
+    await deletedPlace.deleteOne({ session: newSession })
+    deletedPlace.creator.places.pull(deletedPlace)
+    await deletedPlace.creator.save({ session: newSession })
+
+    await newSession.commitTransaction()
   } catch (err) {
+    console.log(err)
     const error = new HttpError('Something went wrong, could not delete place.')
     return next(error)
   }

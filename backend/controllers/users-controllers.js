@@ -56,7 +56,6 @@ async function signupUser(req, res, next) {
 
   try {
     await createdUser.save()
-    //console.log(`User created successfully: ${createdUser._id}`)
   } catch (err) {
     const error = new HttpError('User signup failed, please try again.', 500)
     return next(error)
