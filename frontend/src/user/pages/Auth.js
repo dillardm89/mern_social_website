@@ -5,6 +5,7 @@ import Button from '../../shared/components/form-elements/Button'
 import LoadingSpinner from '../../shared/components/ui-elements/LoadingSpinner'
 import ErrorModal from '../../shared/components/ui-elements/ErrorModal'
 import { useForm } from '../../shared/hooks/form-hook'
+import { useHttpClient } from '../../shared/hooks/http-hook'
 import {
   VALIDATOR_EMAIL,
   VALIDATOR_MINLENGTH,
@@ -16,8 +17,8 @@ import '../styles/Auth.css'
 function Auth(props) {
   const auth = useContext(AuthContext)
   const [isLoginMode, setIsLoginMode] = useState(true)
-  const [isLoading, setIsLoading] = useState(false)
-  const [isError, setIsError] = useState(null)
+
+  const { isLoading, isError, sendRequest, clearError } = useHttpClient()
 
   const [formState, inputHandler, setFormData] = useForm(
     {
@@ -62,46 +63,46 @@ function Auth(props) {
     event.preventDefault()
 
     if (isLoginMode) {
-    } else {
       try {
-        setIsLoading(true)
-        const response = await fetch('http://localhost:5000/api/users/signup', {
-          method: 'POST',
-          headers: {
+        const responseData = await sendRequest(
+          'http://localhost:5000/api/users/login',
+          'POST',
+          {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
+          JSON.stringify({
+            email: formState.inputs.email.value,
+            password: formState.inputs.password.value,
+          })
+        )
+        auth.login(responseData.user.id)
+      } catch (err) {
+        console.log(err.message)
+      }
+    } else {
+      try {
+        const responseData = await fetch(
+          'http://localhost:5000/api/users/signup',
+          'POST',
+          {
+            'Content-Type': 'application/json',
+          },
+          JSON.stringify({
             name: formState.inputs.name.value,
             email: formState.inputs.email.value,
             password: formState.inputs.password.value,
-          }),
-        })
-
-        const responseData = await response.json()
-
-        if (!response.ok) {
-          throw new Error(responseData.message)
-        }
-        console.log(responseData)
-
-        setIsLoading(false)
-        auth.login()
-      } catch (error) {
-        console.log(error)
-        setIsError(error.message || 'Something went wrong, please try again.')
+          })
+        )
+        auth.login(responseData.user.id)
+      } catch (err) {
+        console.log(err.message)
       }
     }
-
-    setIsLoading(false)
-  }
-
-  const errorHandler = () => {
-    setIsError(null)
   }
 
   return (
     <>
-      <ErrorModal error={isError} onClear={errorHandler} />
+      <ErrorModal error={isError} onClear={clearError} />
       <Card className='authentication'>
         {isLoading && <LoadingSpinner asOverlay />}
         <h2>Login Required</h2>
