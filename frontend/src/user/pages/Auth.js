@@ -4,6 +4,7 @@ import Input from '../../shared/components/form-elements/Input'
 import Button from '../../shared/components/form-elements/Button'
 import LoadingSpinner from '../../shared/components/ui-elements/LoadingSpinner'
 import ErrorModal from '../../shared/components/ui-elements/ErrorModal'
+import ImageUpload from '../../shared/components/form-elements/ImageUpload'
 import { useForm } from '../../shared/hooks/form-hook'
 import { useHttpClient } from '../../shared/hooks/http-hook'
 import {
@@ -17,7 +18,6 @@ import '../styles/Auth.css'
 function Auth(props) {
   const auth = useContext(AuthContext)
   const [isLoginMode, setIsLoginMode] = useState(true)
-
   const { isLoading, isError, sendRequest, clearError } = useHttpClient()
 
   const [formState, inputHandler, setFormData] = useForm(
@@ -40,6 +40,7 @@ function Auth(props) {
         {
           ...formState.inputs,
           name: undefined,
+          image: undefined,
         },
         formState.inputs.email.isValid && formState.inputs.password.isValid
       )
@@ -49,6 +50,10 @@ function Auth(props) {
           ...formState.inputs,
           name: {
             value: '',
+            isValid: false,
+          },
+          image: {
+            value: null,
             isValid: false,
           },
         },
@@ -61,6 +66,7 @@ function Auth(props) {
 
   const authSubmitHandler = async (event) => {
     event.preventDefault()
+    console.log(formState.inputs)
 
     if (isLoginMode) {
       try {
@@ -91,6 +97,7 @@ function Auth(props) {
             name: formState.inputs.name.value,
             email: formState.inputs.email.value,
             password: formState.inputs.password.value,
+            imageUrl: formState.inputs.image.value,
           })
         )
         auth.login(responseData.user.id)
@@ -137,6 +144,14 @@ function Auth(props) {
             errorText='Please enter a valid password (at least 12 characters).'
             onInput={inputHandler}
           />
+          {!isLoginMode && (
+            <ImageUpload
+              center
+              id='image'
+              onInput={inputHandler}
+              errorText='Please select an image.'
+            />
+          )}
           <Button type='submit' disabled={!formState.isValid}>
             {isLoginMode ? 'LOGIN' : 'SIGN UP'}
           </Button>
