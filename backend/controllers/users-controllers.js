@@ -6,7 +6,7 @@ const User = require('../models/user')
 async function getAllUsers(req, res, next) {
   let allUsers
   try {
-    allUsers = await User.find({}, 'name email imageUrl')
+    allUsers = await User.find({}, '-password')
   } catch (err) {
     const error = new HttpError('Fetching users failed, please try again', 500)
     return next(error)
@@ -83,7 +83,10 @@ async function loginUser(req, res, next) {
     return next(error)
   }
 
-  res.json({ message: 'Logged In' })
+  res.json({
+    message: 'Logged In',
+    user: existingUser.toObject({ getters: true }),
+  })
 }
 
 module.exports = {

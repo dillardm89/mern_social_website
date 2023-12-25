@@ -3,14 +3,14 @@
     "name": "Jane Smith",
     "email": "mrssmith@jane.com",
     "password": "ILoveMrSmith123!",
-    "imageUrl": "https://en.wikipedia.org/wiki/File:Angelina_Jolie_(48462859552)_(cropped).jpg",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Angelina_Jolie_2_June_2014_%28cropped%29.jpg/642px-Angelina_Jolie_2_June_2014_%28cropped%29.jpg",
     "places": []
   },
   {
     "name": "John Smith",
     "email": "john@smith.com",
     "password": "ILoveJane999!",
-    "imageUrl": "https://en.wikipedia.org/wiki/File:Brad_Pitt_2019_by_Glenn_Francis.jpg",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Brad_Pitt_October_2014.jpg/950px-Brad_Pitt_October_2014.jpg",
     "places": []
   }
 ]
