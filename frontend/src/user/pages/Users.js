@@ -5,7 +5,7 @@ import ErrorModal from '../../shared/components/ui-elements/ErrorModal'
 import LoadingSpinner from '../../shared/components/ui-elements/LoadingSpinner'
 
 function Users() {
-  const API_URL = process.env.API_URL
+  const API_URL = process.env.REACT_APP_API_URL
   const { isLoading, isError, sendRequest, clearError } = useHttpClient()
   const [loadedUsers, setLoadedUsers] = useState(null)
 

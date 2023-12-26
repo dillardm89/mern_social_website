@@ -16,7 +16,7 @@ import { AuthContext } from '../../shared/context/auth-context'
 import '../styles/Auth.css'
 
 function Auth(props) {
-  const API_URL = process.env.API_URL
+  const API_URL = process.env.REACT_APP_API_URL
   const auth = useContext(AuthContext)
   const [isLoginMode, setIsLoginMode] = useState(true)
   const { isLoading, isError, sendRequest, clearError } = useHttpClient()

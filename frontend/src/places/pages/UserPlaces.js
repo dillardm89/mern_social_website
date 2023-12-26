@@ -6,7 +6,7 @@ import LoadingSpinner from '../../shared/components/ui-elements/LoadingSpinner'
 import { useHttpClient } from '../../shared/hooks/http-hook'
 
 function UserPlaces(props) {
-  const API_URL = process.env.API_URL
+  const API_URL = process.env.REACT_APP_API_URL
   const { isLoading, isError, sendRequest, clearError } = useHttpClient()
   const [loadedPlaces, setLoadedPlaces] = useState(null)
   const userId = useParams().uid

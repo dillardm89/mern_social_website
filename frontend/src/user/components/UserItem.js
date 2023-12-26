@@ -5,7 +5,7 @@ import Card from '../../shared/components/ui-elements/Card'
 import '../styles/UserItem.css'
 
 function UserItem(props) {
-  const API_URL = process.env.API_URL
+  const API_URL = process.env.REACT_APP_API_URL
 
   return (
     <li className='user-item'>

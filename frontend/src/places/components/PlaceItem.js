@@ -10,7 +10,7 @@ import { useHttpClient } from '../../shared/hooks/http-hook'
 import '../styles/PlaceItem.css'
 
 function PlaceItem(props) {
-  const API_URL = process.env.API_URL
+  const API_URL = process.env.REACT_APP_API_URL
   const auth = useContext(AuthContext)
   const { isLoading, isError, sendRequest, clearError } = useHttpClient()
   const [showMap, setShowMap] = useState(false)

@@ -15,7 +15,7 @@ import { AuthContext } from '../../shared/context/auth-context'
 import '../styles/PlaceForm.css'
 
 function UpdatePlace(props) {
-  const API_URL = process.env.API_URL
+  const API_URL = process.env.REACT_APP_API_URL
   const { isLoading, isError, sendRequest, clearError } = useHttpClient()
   const [loadedPlace, setLoadedPlace] = useState(null)
   const placeId = useParams().pid
@@ -64,7 +64,7 @@ function UpdatePlace(props) {
     }
 
     fetchPlace()
-  }, [sendRequest, placeId, setFormData])
+  }, [sendRequest, placeId, setFormData, API_URL])
 
   const placeUpdateSubmitHandler = async (event) => {
     event.preventDefault()
