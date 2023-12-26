@@ -21,7 +21,7 @@ async function signupUser(req, res, next) {
   const errors = validationResult(req)
 
   if (!errors.isEmpty()) {
-    console.log(errors)
+    //console.log(errors)
     return next(
       new HttpError('Invalid inputs passed, please check your data.', 422)
     )
@@ -49,8 +49,7 @@ async function signupUser(req, res, next) {
     name,
     email,
     password,
-    imageUrl:
-      'https://en.wikipedia.org/wiki/File:Angelina_Jolie_(48462859552)_(cropped).jpg',
+    imageUrl: req.file.path,
     places: [],
   })
 
