@@ -5,15 +5,14 @@ import ErrorModal from '../../shared/components/ui-elements/ErrorModal'
 import LoadingSpinner from '../../shared/components/ui-elements/LoadingSpinner'
 
 function Users() {
+  const API_URL = process.env.API_URL
   const { isLoading, isError, sendRequest, clearError } = useHttpClient()
   const [loadedUsers, setLoadedUsers] = useState(null)
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const responseData = await sendRequest(
-          'http://localhost:5000/api/users'
-        )
+        const responseData = await sendRequest(`${API_URL}/api/users`)
 
         setLoadedUsers(responseData.users)
       } catch (err) {
@@ -22,7 +21,7 @@ function Users() {
     }
 
     fetchUsers()
-  }, [sendRequest])
+  }, [sendRequest, API_URL])
 
   return (
     <>

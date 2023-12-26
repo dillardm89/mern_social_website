@@ -16,6 +16,7 @@ import { AuthContext } from '../../shared/context/auth-context'
 import '../styles/Auth.css'
 
 function Auth(props) {
+  const API_URL = process.env.API_URL
   const auth = useContext(AuthContext)
   const [isLoginMode, setIsLoginMode] = useState(true)
   const { isLoading, isError, sendRequest, clearError } = useHttpClient()
@@ -70,7 +71,7 @@ function Auth(props) {
     if (isLoginMode) {
       try {
         const responseData = await sendRequest(
-          'http://localhost:5000/api/users/login',
+          `${API_URL}/api/users/login`,
           'POST',
           JSON.stringify({
             email: formState.inputs.email.value,
@@ -93,7 +94,7 @@ function Auth(props) {
         formData.append('image', formState.inputs.image.value)
 
         const responseData = await sendRequest(
-          'http://localhost:5000/api/users/signup',
+          `${API_URL}/api/users/signup`,
           'POST',
           formData
         )

@@ -5,15 +5,14 @@ import Card from '../../shared/components/ui-elements/Card'
 import '../styles/UserItem.css'
 
 function UserItem(props) {
+  const API_URL = process.env.API_URL
+
   return (
     <li className='user-item'>
       <Card className='user-item__content'>
         <Link to={`/${props.id}/places`}>
           <div className='user-item__image'>
-            <Avatar
-              image={`http://localhost:5000/${props.image}`}
-              alt={props.name}
-            />
+            <Avatar image={`${API_URL}/${props.image}`} alt={props.name} />
           </div>
           <div className='user-item__info'>
             <h2>{props.name}</h2>

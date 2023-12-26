@@ -15,6 +15,7 @@ import ImageUpload from '../../shared/components/form-elements/ImageUpload'
 import '../styles/PlaceForm.css'
 
 function NewPlace() {
+  const API_URL = process.env.API_URL
   const navigate = useNavigate()
   const auth = useContext(AuthContext)
   const { isLoading, isError, sendRequest, clearError } = useHttpClient()
@@ -48,7 +49,7 @@ function NewPlace() {
       formData.append('image', formState.inputs.image.value)
       formData.append('creator', auth.userId)
 
-      await sendRequest('http://localhost:5000/api/places', 'POST', formData)
+      await sendRequest(`${API_URL}/api/places`, 'POST', formData)
       navigate(`/${auth.userId}/places`)
     } catch (err) {
       //console.log(err.message)
