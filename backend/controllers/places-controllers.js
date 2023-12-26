@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const { validationResult } = require('express-validator')
+const fs = require('fs')
 
 const HttpError = require('../models/http-error')
 const { getCoordsForAddress } = require('../utils/location')
@@ -62,7 +63,7 @@ async function createPlace(req, res, next) {
   const errors = validationResult(req)
 
   if (!errors.isEmpty()) {
-    console.log(errors)
+    //console.log(errors)
     return next(
       new HttpError('Invalid inputs passed, please check your data.', 422)
     )
@@ -85,7 +86,7 @@ async function createPlace(req, res, next) {
     description,
     address: updatedAddress,
     location: coordinates,
-    imageUrl: 'https://media.timeout.com/images/101705309/1024/576/image.webp',
+    imageUrl: req.file.path,
     creator,
   })
 
@@ -124,7 +125,7 @@ async function updatePlace(req, res, next) {
   const errors = validationResult(req)
 
   if (!errors.isEmpty()) {
-    console.log(errors)
+    //console.log(errors)
     return next(
       new HttpError('Invalid inputs passed, please check your data.', 422)
     )
@@ -176,6 +177,8 @@ async function deletePlace(req, res, next) {
     return next(error)
   }
 
+  const imagePath = deletedPlace.image
+
   try {
     const newSession = await mongoose.startSession()
     newSession.startTransaction()
@@ -186,10 +189,14 @@ async function deletePlace(req, res, next) {
 
     await newSession.commitTransaction()
   } catch (err) {
-    console.log(err)
+    //console.log(err)
     const error = new HttpError('Something went wrong, could not delete place.')
     return next(error)
   }
+
+  fs.unlink(imagePath, (err) => {
+    //console.log(err)
+  })
 
   res.status(200).json({ message: 'Deleted place.' })
 }

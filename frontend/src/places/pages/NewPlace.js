@@ -11,6 +11,7 @@ import { useHttpClient } from '../../shared/hooks/http-hook'
 import { AuthContext } from '../../shared/context/auth-context'
 import ErrorModal from '../../shared/components/ui-elements/ErrorModal'
 import LoadingSpinner from '../../shared/components/ui-elements/LoadingSpinner'
+import ImageUpload from '../../shared/components/form-elements/ImageUpload'
 import '../styles/PlaceForm.css'
 
 function NewPlace() {
@@ -40,17 +41,14 @@ function NewPlace() {
     event.preventDefault()
 
     try {
-      await sendRequest(
-        'http://localhost:5000/api/places',
-        'POST',
-        { 'Content-Type': 'application/json' },
-        JSON.stringify({
-          title: formState.inputs.title.value,
-          description: formState.inputs.description.value,
-          address: formState.inputs.address.value,
-          creator: auth.userId,
-        })
-      )
+      const formData = new FormData()
+      formData.append('title', formState.inputs.title.value)
+      formData.append('address', formState.inputs.address.value)
+      formData.append('description', formState.inputs.description.value)
+      formData.append('image', formState.inputs.image.value)
+      formData.append('creator', auth.userId)
+
+      await sendRequest('http://localhost:5000/api/places', 'POST', formData)
       navigate(`/${auth.userId}/places`)
     } catch (err) {
       //console.log(err.message)
@@ -88,7 +86,12 @@ function NewPlace() {
           validators={[VALIDATOR_MINLENGTH(5)]}
           errorText='Please enter a valid description (at least 5 characters).'
         />
-
+        <ImageUpload
+          center
+          id='image'
+          onInput={inputHandler}
+          errorText='Please select an image.'
+        />
         <Button type='submit' disabled={!formState.isValid}>
           ADD PLACE
         </Button>
