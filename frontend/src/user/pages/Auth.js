@@ -16,6 +16,7 @@ import { AuthContext } from '../../shared/context/auth-context'
 import '../styles/Auth.css'
 
 function Auth(props) {
+  const API_URL = process.env.REACT_APP_API_URL
   const auth = useContext(AuthContext)
   const [isLoginMode, setIsLoginMode] = useState(true)
   const { isLoading, isError, sendRequest, clearError } = useHttpClient()
@@ -70,7 +71,7 @@ function Auth(props) {
     if (isLoginMode) {
       try {
         const responseData = await sendRequest(
-          'http://localhost:5000/api/users/login',
+          `${API_URL}/api/users/login`,
           'POST',
           JSON.stringify({
             email: formState.inputs.email.value,
@@ -80,7 +81,7 @@ function Auth(props) {
             'Content-Type': 'application/json',
           }
         )
-        auth.login(responseData.user.id)
+        auth.login(responseData.userId, responseData.token)
       } catch (err) {
         //console.log(err.message)
       }
@@ -93,11 +94,11 @@ function Auth(props) {
         formData.append('image', formState.inputs.image.value)
 
         const responseData = await sendRequest(
-          'http://localhost:5000/api/users/signup',
+          `${API_URL}/api/users/signup`,
           'POST',
           formData
         )
-        auth.login(responseData.user.id)
+        auth.login(responseData.userId, responseData.token)
       } catch (err) {
         //console.log(err.message)
       }

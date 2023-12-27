@@ -69,7 +69,7 @@ async function createPlace(req, res, next) {
     )
   }
 
-  const { title, description, address, creator } = req.body
+  const { title, description, address } = req.body
 
   let coordinates
   let updatedAddress
@@ -87,12 +87,12 @@ async function createPlace(req, res, next) {
     address: updatedAddress,
     location: coordinates,
     imageUrl: req.file.path,
-    creator,
+    creator: req.userData.userId,
   })
 
   let validUser
   try {
-    validUser = await User.findById(creator)
+    validUser = await User.findById(req.userData.userId)
   } catch (err) {
     const error = new HttpError('Could not find a user.', 500)
     return next(error)
@@ -145,13 +145,24 @@ async function updatePlace(req, res, next) {
     return next(error)
   }
 
+  if (updatedPlace.creator.toString() !== req.userData.userId) {
+    const error = new HttpError(
+      'You are not authorized to edit this place.',
+      401
+    )
+    return next(error)
+  }
+
   updatedPlace.title = title
   updatedPlace.description = description
 
   try {
     await updatedPlace.save()
   } catch (err) {
-    const error = new HttpError('Something went wrong, could not update place.')
+    const error = new HttpError(
+      'Something went wrong, could not update place.',
+      500
+    )
     return next(error)
   }
 
@@ -172,12 +183,20 @@ async function deletePlace(req, res, next) {
     return next(error)
   }
 
-  if (!deletePlace) {
+  if (!deletedPlace) {
     const error = new HttpError('Could not find place for this ID.', 404)
     return next(error)
   }
 
-  const imagePath = deletedPlace.image
+  if (deletedPlace.creator.id !== req.userData.userId) {
+    const error = new HttpError(
+      'You are not authorized to delete this place.',
+      401
+    )
+    return next(error)
+  }
+
+  const imagePath = deletedPlace.imageUrl
 
   try {
     const newSession = await mongoose.startSession()

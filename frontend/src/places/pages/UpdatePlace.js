@@ -15,6 +15,7 @@ import { AuthContext } from '../../shared/context/auth-context'
 import '../styles/PlaceForm.css'
 
 function UpdatePlace(props) {
+  const API_URL = process.env.REACT_APP_API_URL
   const { isLoading, isError, sendRequest, clearError } = useHttpClient()
   const [loadedPlace, setLoadedPlace] = useState(null)
   const placeId = useParams().pid
@@ -39,7 +40,7 @@ function UpdatePlace(props) {
     const fetchPlace = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/places/${placeId}`
+          `${API_URL}/api/places/${placeId}`
         )
 
         setLoadedPlace(responseData.place)
@@ -63,14 +64,14 @@ function UpdatePlace(props) {
     }
 
     fetchPlace()
-  }, [sendRequest, placeId, setFormData])
+  }, [sendRequest, placeId, setFormData, API_URL])
 
   const placeUpdateSubmitHandler = async (event) => {
     event.preventDefault()
 
     try {
       await sendRequest(
-        `http://localhost:5000/api/places/${placeId}`,
+        `${API_URL}/api/places/${placeId}`,
         'PATCH',
         JSON.stringify({
           title: formState.inputs.title.value,
@@ -78,6 +79,7 @@ function UpdatePlace(props) {
         }),
         {
           'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + auth.token,
         }
       )
       navigate(`/${auth.userId}/places`)

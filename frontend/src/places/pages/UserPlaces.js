@@ -6,6 +6,7 @@ import LoadingSpinner from '../../shared/components/ui-elements/LoadingSpinner'
 import { useHttpClient } from '../../shared/hooks/http-hook'
 
 function UserPlaces(props) {
+  const API_URL = process.env.REACT_APP_API_URL
   const { isLoading, isError, sendRequest, clearError } = useHttpClient()
   const [loadedPlaces, setLoadedPlaces] = useState(null)
   const userId = useParams().uid
@@ -14,7 +15,7 @@ function UserPlaces(props) {
     const fetchPlaces = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/places/user/${userId}`
+          `${API_URL}/api/places/user/${userId}`
         )
 
         setLoadedPlaces(responseData.places)
@@ -23,7 +24,7 @@ function UserPlaces(props) {
       }
     }
     fetchPlaces()
-  }, [sendRequest, userId])
+  }, [sendRequest, userId, API_URL])
 
   const placeDeletedHandler = (deletedPlaceId) => {
     setLoadedPlaces((prevPlaces) =>
