@@ -28,6 +28,10 @@ function UpdatePlace(props) {
         value: '',
         isValid: false,
       },
+      address: {
+        value: '',
+        isValid: false,
+      },
       description: {
         value: '',
         isValid: false,
@@ -49,6 +53,10 @@ function UpdatePlace(props) {
           {
             title: {
               value: responseData.place.title,
+              isValid: true,
+            },
+            address: {
+              value: responseData.place.address,
               isValid: true,
             },
             description: {
@@ -75,6 +83,7 @@ function UpdatePlace(props) {
         'PATCH',
         JSON.stringify({
           title: formState.inputs.title.value,
+          address: formState.inputs.address.value,
           description: formState.inputs.description.value,
         }),
         {
@@ -122,6 +131,17 @@ function UpdatePlace(props) {
             onInput={inputHandler}
             initialValue={loadedPlace.title}
             initialIsValid={true}
+          />
+
+          <Input
+            id='address'
+            element='input'
+            type='text'
+            label='Address'
+            validators={[VALIDATOR_REQUIRE()]}
+            onInput={inputHandler}
+            initialValue={loadedPlace.address}
+            errorText='Please enter a valid address.'
           />
 
           <Input

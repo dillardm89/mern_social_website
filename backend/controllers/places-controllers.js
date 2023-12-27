@@ -145,7 +145,7 @@ async function updatePlace(req, res, next) {
     )
   }
 
-  const { title, description } = req.body
+  const { title, description, address } = req.body
   const placeId = req.params.pid
 
   let updatedPlace
@@ -167,8 +167,20 @@ async function updatePlace(req, res, next) {
     return next(error)
   }
 
+  let coordinates
+  let updatedAddress
+  try {
+    const results = await getCoordsForAddress(address)
+    coordinates = results[0]
+    updatedAddress = results[1]
+  } catch (error) {
+    return next(error)
+  }
+
   updatedPlace.title = title
   updatedPlace.description = description
+  updatedPlace.address = updatedAddress
+  updatedPlace.location = coordinates
 
   try {
     await updatedPlace.save()
@@ -180,7 +192,7 @@ async function updatePlace(req, res, next) {
     return next(error)
   }
 
-  res.status(200).json({ place: updatedPlace.toObject({ getters: true }) })
+  res.status(201).json({ place: updatedPlace.toObject({ getters: true }) })
 }
 
 async function deletePlace(req, res, next) {
@@ -231,7 +243,7 @@ async function deletePlace(req, res, next) {
     //console.log(err)
   })
 
-  res.status(200).json({ message: 'Deleted place.' })
+  res.status(201).json({ message: 'Deleted place.' })
 }
 
 module.exports = {
