@@ -7,6 +7,20 @@ const { getCoordsForAddress } = require('../utils/location')
 const Place = require('../models/place')
 const User = require('../models/user')
 
+async function getAllPlaces(req, res, next) {
+  let allPlaces
+  try {
+    allPlaces = await Place.find()
+  } catch (err) {
+    const error = new HttpError('Fetching places failed, please try again', 500)
+    return next(error)
+  }
+
+  res.status(201).json({
+    places: allPlaces.map((place) => place.toObject({ getters: true })),
+  })
+}
+
 async function getPlacesByUserId(req, res, next) {
   const userId = req.params.uid
 
@@ -221,6 +235,7 @@ async function deletePlace(req, res, next) {
 }
 
 module.exports = {
+  getAllPlaces,
   getPlacesByUserId,
   getPlaceById,
   createPlace,
