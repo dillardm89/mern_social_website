@@ -105,15 +105,15 @@ async function loginUser(req, res, next) {
 
   if (!existingUser) {
     const error = new HttpError(
-      'Invalid credentials, could not log you in.',
-      401
+      'No user found for entered email, please try again or sign up instead.',
+      403
     )
     return next(error)
   }
 
   let isValidPassword = false
   try {
-    isValidPassword = await bcrypt.compare(password.existingUser.password)
+    isValidPassword = await bcrypt.compare(password, existingUser.password)
   } catch (err) {
     //console.log(err)
     const error = new HttpError(
@@ -125,7 +125,7 @@ async function loginUser(req, res, next) {
 
   if (!isValidPassword) {
     const error = new HttpError(
-      'Could not log you in, please check your credentials and try again.',
+      'Invalid email/password combination, please check your credentials and try again.',
       500
     )
     return next(error)

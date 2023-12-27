@@ -47,9 +47,10 @@ function NewPlace() {
       formData.append('address', formState.inputs.address.value)
       formData.append('description', formState.inputs.description.value)
       formData.append('image', formState.inputs.image.value)
-      formData.append('creator', auth.userId)
 
-      await sendRequest(`${API_URL}/api/places`, 'POST', formData)
+      await sendRequest(`${API_URL}/api/places`, 'POST', formData, {
+        Authorization: 'Bearer ' + auth.token,
+      })
       navigate(`/${auth.userId}/places`)
     } catch (err) {
       //console.log(err.message)

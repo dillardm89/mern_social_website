@@ -32,7 +32,9 @@ function PlaceItem(props) {
     setShowDeleteModal(false)
 
     try {
-      await sendRequest(`${API_URL}/${props.id}`, 'DELETE')
+      await sendRequest(`${API_URL}/api/places/${props.id}`, 'DELETE', null, {
+        Authorization: 'Bearer ' + auth.token,
+      })
 
       props.onDelete(props.id)
     } catch (err) {
