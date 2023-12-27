@@ -15,12 +15,12 @@ import { AuthContext } from '../../shared/context/auth-context'
 import '../styles/PlaceForm.css'
 
 function UpdatePlace(props) {
+  const navigate = useNavigate()
+  const placeId = useParams().pid
+  const auth = useContext(AuthContext)
   const API_URL = process.env.REACT_APP_API_URL
   const { isLoading, isError, sendRequest, clearError } = useHttpClient()
   const [loadedPlace, setLoadedPlace] = useState(null)
-  const placeId = useParams().pid
-  const navigate = useNavigate()
-  const auth = useContext(AuthContext)
 
   const [formState, inputHandler, setFormData] = useForm(
     {
@@ -123,6 +123,7 @@ function UpdatePlace(props) {
             initialValue={loadedPlace.title}
             initialIsValid={true}
           />
+
           <Input
             id='description'
             element='textarea'

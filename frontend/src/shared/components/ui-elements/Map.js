@@ -17,6 +17,7 @@ function Map(props) {
   return (
     <div
       ref={mapRef}
+      id='map'
       className={`map ${props.className}`}
       style={props.style}
     ></div>

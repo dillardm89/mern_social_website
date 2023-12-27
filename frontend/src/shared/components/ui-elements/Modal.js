@@ -33,6 +33,7 @@ function Modal(props) {
   return (
     <>
       {props.show && <Backdrop onClick={props.onCancel} />}
+
       <CSSTransition
         nodeRef={nodeRef}
         in={props.show}

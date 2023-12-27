@@ -3,9 +3,9 @@ const { validationResult } = require('express-validator')
 const fs = require('fs')
 
 const HttpError = require('../models/http-error')
-const { getCoordsForAddress } = require('../utils/location')
 const Place = require('../models/place')
 const User = require('../models/user')
+const { getCoordsForAddress } = require('../utils/location')
 
 async function getAllPlaces(req, res, next) {
   let allPlaces

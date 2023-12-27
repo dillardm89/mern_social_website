@@ -15,9 +15,9 @@ import ImageUpload from '../../shared/components/form-elements/ImageUpload'
 import '../styles/PlaceForm.css'
 
 function NewPlace() {
-  const API_URL = process.env.REACT_APP_API_URL
   const navigate = useNavigate()
   const auth = useContext(AuthContext)
+  const API_URL = process.env.REACT_APP_API_URL
   const { isLoading, isError, sendRequest, clearError } = useHttpClient()
 
   const [formState, inputHandler] = useForm(
@@ -60,8 +60,10 @@ function NewPlace() {
   return (
     <>
       <ErrorModal error={isError} onClear={clearError} />
+
       <form className='place-form' onSubmit={placeSubmitHandler}>
         {isLoading && <LoadingSpinner asOverlay />}
+
         <Input
           id='title'
           element='input'
@@ -71,6 +73,7 @@ function NewPlace() {
           validators={[VALIDATOR_REQUIRE()]}
           errorText='Please enter a valid title.'
         />
+
         <Input
           id='address'
           element='input'
@@ -80,6 +83,7 @@ function NewPlace() {
           validators={[VALIDATOR_REQUIRE()]}
           errorText='Please enter a valid address.'
         />
+
         <Input
           id='description'
           element='textarea'
@@ -88,12 +92,14 @@ function NewPlace() {
           validators={[VALIDATOR_MINLENGTH(5)]}
           errorText='Please enter a valid description (at least 5 characters).'
         />
+
         <ImageUpload
           center
           id='image'
           onInput={inputHandler}
           errorText='Please select an image.'
         />
+
         <Button type='submit' disabled={!formState.isValid}>
           ADD PLACE
         </Button>

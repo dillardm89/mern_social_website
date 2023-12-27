@@ -13,6 +13,7 @@ const database = 'places'
 const mongoConnectString = `mongodb://localhost:27017/${database}?replicaSet=rs0`
 
 const app = express()
+
 app.use(bodyParser.json())
 
 app.use('/uploads/images', express.static(path.join('uploads', 'images')))

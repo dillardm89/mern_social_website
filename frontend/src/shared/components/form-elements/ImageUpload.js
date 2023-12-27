@@ -3,11 +3,10 @@ import Button from './Button'
 import './styles/ImageUpload.css'
 
 function ImageUpload(props) {
+  const filePickerRef = useRef()
   const [file, setFile] = useState(null)
   const [previewUrl, setPreviewUrl] = useState(null)
   const [isValid, setIsValid] = useState(false)
-
-  const filePickerRef = useRef()
 
   const pickedHandler = (event) => {
     let pickedFile
@@ -58,6 +57,7 @@ function ImageUpload(props) {
           {previewUrl && <img src={previewUrl} alt='preview' />}
           {!previewUrl && <p>Please choose an image.</p>}
         </div>
+
         <Button type='button' onClick={pickImageHandler}>
           Select An Image
         </Button>

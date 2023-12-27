@@ -16,8 +16,8 @@ import { AuthContext } from '../../shared/context/auth-context'
 import '../styles/Auth.css'
 
 function Auth(props) {
-  const API_URL = process.env.REACT_APP_API_URL
   const auth = useContext(AuthContext)
+  const API_URL = process.env.REACT_APP_API_URL
   const [isLoginMode, setIsLoginMode] = useState(true)
   const { isLoading, isError, sendRequest, clearError } = useHttpClient()
 
@@ -108,8 +108,10 @@ function Auth(props) {
   return (
     <>
       <ErrorModal error={isError} onClear={clearError} />
+
       <Card className='authentication'>
         {isLoading && <LoadingSpinner asOverlay />}
+
         <h2>Login Required</h2>
         <hr />
         <form onSubmit={authSubmitHandler}>
@@ -124,6 +126,7 @@ function Auth(props) {
               onInput={inputHandler}
             />
           )}
+
           <Input
             id='email'
             element='input'
@@ -133,6 +136,7 @@ function Auth(props) {
             errorText='Please enter a valid email address.'
             onInput={inputHandler}
           />
+
           <Input
             id='password'
             element='input'
@@ -142,6 +146,7 @@ function Auth(props) {
             errorText='Please enter a valid password (at least 12 characters).'
             onInput={inputHandler}
           />
+
           {!isLoginMode && (
             <ImageUpload
               center
@@ -150,10 +155,12 @@ function Auth(props) {
               errorText='Please select an image.'
             />
           )}
+
           <Button type='submit' disabled={!formState.isValid}>
             {isLoginMode ? 'LOGIN' : 'SIGN UP'}
           </Button>
         </form>
+
         <Button inverse onClick={switchModeHandler}>
           SWITCH TO {isLoginMode ? 'SIGN UP' : 'LOGIN'}
         </Button>
