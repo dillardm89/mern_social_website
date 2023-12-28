@@ -6,7 +6,13 @@ import SideDrawer from './SideDrawer'
 import Backdrop from '../ui-elements/Backdrop'
 import './styles/MainNavigation.css'
 
-function MainNavigation(props) {
+/**
+ * Component for rendering main navigation element
+ * @callback openDrawerHandler function to open/show mobile navigation side drawer
+ * @callback closeDrawerHandler function to close/hide mobile navigation side drawer
+ * @returns {React.JSX.Element} MainNavigation Element
+ */
+function MainNavigation() {
   const [drawerIsOpen, setDrawerIsOpen] = useState(false)
 
   const openDrawerHandler = () => {

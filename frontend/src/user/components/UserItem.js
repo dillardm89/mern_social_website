@@ -4,6 +4,16 @@ import Avatar from '../../shared/components/ui-elements/Avatar'
 import Card from '../../shared/components/ui-elements/Card'
 import '../styles/UserItem.css'
 
+/**
+ * Component for showing details of specific user
+ * Props passed down from UsersList.js
+ * @param {Object} props
+ * @param {String} props.id string of user ID
+ * @param {String} props.name string of user name
+ * @param {String} props.image string uri of the user image
+ * @param {String} props.placeCount string for number of places for user
+ * @returns {React.JSX.Element} UserItem Element
+ */
 function UserItem(props) {
   const API_URL = process.env.REACT_APP_API_URL
 

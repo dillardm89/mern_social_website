@@ -14,17 +14,25 @@ import { useHttpClient } from '../../shared/hooks/http-hook'
 import { AuthContext } from '../../shared/context/auth-context'
 import '../styles/PlaceForm.css'
 
-function UpdatePlace(props) {
+/**
+ * Page for rendering form to update existing place
+ * @returns {React.JSX.Element} UpdatePlace Element
+ */
+function UpdatePlace() {
+  const navigate = useNavigate()
+  const placeId = useParams().pid
+  const auth = useContext(AuthContext)
   const API_URL = process.env.REACT_APP_API_URL
   const { isLoading, isError, sendRequest, clearError } = useHttpClient()
   const [loadedPlace, setLoadedPlace] = useState(null)
-  const placeId = useParams().pid
-  const navigate = useNavigate()
-  const auth = useContext(AuthContext)
 
   const [formState, inputHandler, setFormData] = useForm(
     {
       title: {
+        value: '',
+        isValid: false,
+      },
+      address: {
         value: '',
         isValid: false,
       },
@@ -51,6 +59,10 @@ function UpdatePlace(props) {
               value: responseData.place.title,
               isValid: true,
             },
+            address: {
+              value: responseData.place.address,
+              isValid: true,
+            },
             description: {
               value: responseData.place.description,
               isValid: true,
@@ -75,6 +87,7 @@ function UpdatePlace(props) {
         'PATCH',
         JSON.stringify({
           title: formState.inputs.title.value,
+          address: formState.inputs.address.value,
           description: formState.inputs.description.value,
         }),
         {
@@ -123,6 +136,18 @@ function UpdatePlace(props) {
             initialValue={loadedPlace.title}
             initialIsValid={true}
           />
+
+          <Input
+            id='address'
+            element='input'
+            type='text'
+            label='Address'
+            validators={[VALIDATOR_REQUIRE()]}
+            onInput={inputHandler}
+            initialValue={loadedPlace.address}
+            errorText='Please enter a valid address.'
+          />
+
           <Input
             id='description'
             element='textarea'

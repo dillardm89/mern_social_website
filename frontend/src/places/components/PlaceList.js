@@ -4,6 +4,16 @@ import PlaceItem from './PlaceItem'
 import Button from '../../shared/components/form-elements/Button'
 import '../styles/PlaceList.css'
 
+/**
+ * Component for rendering a list of place items
+ * Props passed down from AllPlaces.js or UserPlaces.js
+ * @param {Object} props
+ * @param {Array} props.items array of objects contain place data
+ * @param {() => void} props.onDeletePlace callback function for deleting place (UserPlaces.js)
+ * @callback onDelete function passed as prop to PlaceItem.js
+ * @returns {Object} place containing data passed as props to PlaceItem.js
+ * @returns {React.JSX.Element} PlaceList Element
+ */
 function PlaceList(props) {
   if (props.items.length === 0) {
     return (

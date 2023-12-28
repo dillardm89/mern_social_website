@@ -1,31 +1,31 @@
 import React, { useEffect, useState } from 'react'
 import { useHttpClient } from '../../shared/hooks/http-hook'
-import UsersList from '../components/UsersList'
 import ErrorModal from '../../shared/components/ui-elements/ErrorModal'
 import LoadingSpinner from '../../shared/components/ui-elements/LoadingSpinner'
+import PlaceList from '../components/PlaceList'
 
 /**
- * Page for rendering all users
- * @returns {Array} items containing user objects passed as props to UsersList.js
- * @returns {React.JSX.Element} Users Element
+ * Page for rendering all places
+ * @returns {Array} items containing place objects passed as props to PlaceList.js
+ * @returns {React.JSX.Element} AllPlaces Element
  */
-function Users() {
+function AllPlaces() {
   const API_URL = process.env.REACT_APP_API_URL
   const { isLoading, isError, sendRequest, clearError } = useHttpClient()
-  const [loadedUsers, setLoadedUsers] = useState(null)
+  const [loadedPlaces, setLoadedPlaces] = useState(null)
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchAllPlaces = async () => {
       try {
-        const responseData = await sendRequest(`${API_URL}/api/users`)
-
-        setLoadedUsers(responseData.users)
+        const responseData = await sendRequest(`${API_URL}/api/places/`)
+        console.log(responseData)
+        setLoadedPlaces(responseData.places)
       } catch (err) {
         //console.log(err.message)
       }
     }
 
-    fetchUsers()
+    fetchAllPlaces()
   }, [sendRequest, API_URL])
 
   return (
@@ -38,9 +38,9 @@ function Users() {
         </div>
       )}
 
-      {!isLoading && loadedUsers && <UsersList items={loadedUsers} />}
+      {!isLoading && loadedPlaces && <PlaceList items={loadedPlaces} />}
     </>
   )
 }
 
-export default Users
+export default AllPlaces

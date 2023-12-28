@@ -2,11 +2,26 @@ import { useState, useCallback, useEffect } from 'react'
 
 let logoutTimer
 
+/**
+ * Hook function for user authentication (log in, log out, and tokenization)
+ * @returns {String} token
+ * @returns {String} isLoggedIn
+ * @returns {() => void} login callback to method
+ * @returns {() => void}  logout callback to method
+ */
 export function useAuth() {
   const [token, setToken] = useState(false)
   const [userId, setUserId] = useState(null)
   const [tokenExpirationDate, setTokenExpirationDate] = useState(null)
 
+  /**
+   * Auth method for user login and tokenization
+   * @method login
+   * @param {String} uid string of user ID
+   * @param {String} token
+   * @param {Date} expirationDate expiration date of token based on user log in date
+   *        either set previously (user reload page) or set initially upon first log in
+   */
   const login = useCallback((uid, token, expirationDate) => {
     setToken(token)
     setUserId(uid)
@@ -26,6 +41,10 @@ export function useAuth() {
     )
   }, [])
 
+  /**
+   * Auth method for user log out and reset token
+   * @method logout
+   */
   const logout = useCallback(() => {
     setToken(null)
     setUserId(null)

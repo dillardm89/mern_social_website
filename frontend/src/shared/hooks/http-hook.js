@@ -1,11 +1,28 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 
+/**
+ * Hook function for handling calls to API and sets abort
+ * functionality if user changes / refreshes page before request completed
+ * @returns {Boolean} isLoading status whether request complete or not (true/false)
+ * @returns {String} isError string of error message
+ * @returns {() => void} sendRequest callback to method
+ * @returns {() => void}  clearError callback to method
+ */
 export function useHttpClient() {
   const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState(false)
 
   const activeHttpRequests = useRef([])
 
+  /**
+   * Form method to handle sending requests to API
+   * @method sendRequest
+   * @param {String} url string containing API url
+   * @param {String} method string of request method: GET, POST, PATCH, or DELETE
+   * @param {Object} body object containing body data for request
+   * @param {Object} headers object containing header data for request
+   * @returns {Object} responseData from API
+   */
   const sendRequest = useCallback(
     async (url, method = 'GET', body = null, headers = {}) => {
       setIsLoading(true)
@@ -46,6 +63,10 @@ export function useHttpClient() {
     []
   )
 
+  /**
+   * Form method to clear error message (modal)
+   * @method clearError
+   */
   const clearError = () => {
     setIsError(null)
   }

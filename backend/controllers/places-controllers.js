@@ -3,10 +3,38 @@ const { validationResult } = require('express-validator')
 const fs = require('fs')
 
 const HttpError = require('../models/http-error')
-const { getCoordsForAddress } = require('../utils/location')
 const Place = require('../models/place')
 const User = require('../models/user')
+const { getCoordsForAddress } = require('../utils/location')
 
+/**
+ * Retrieves all places from db then maps for frontend rendering
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Array} allPlaces
+ */
+async function getAllPlaces(req, res, next) {
+  let allPlaces
+  try {
+    allPlaces = await Place.find()
+  } catch (err) {
+    const error = new HttpError('Fetching places failed, please try again', 500)
+    return next(error)
+  }
+
+  res.status(201).json({
+    places: allPlaces.map((place) => place.toObject({ getters: true })),
+  })
+}
+
+/**
+ * Retrieves all places for specific user from db then maps for frontend rendering
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Array} userPlaces
+ */
 async function getPlacesByUserId(req, res, next) {
   const userId = req.params.uid
 
@@ -34,6 +62,13 @@ async function getPlacesByUserId(req, res, next) {
   })
 }
 
+/**
+ * Retrieves specific place by ID from db for frontend rendering
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Object} specificPlace
+ */
 async function getPlaceById(req, res, next) {
   const placeId = req.params.pid
 
@@ -59,6 +94,13 @@ async function getPlaceById(req, res, next) {
   res.json({ place: specificPlace.toObject({ getters: true }) })
 }
 
+/**
+ * Create new place and store in db
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Object} createdPlace
+ */
 async function createPlace(req, res, next) {
   const errors = validationResult(req)
 
@@ -71,6 +113,7 @@ async function createPlace(req, res, next) {
 
   const { title, description, address } = req.body
 
+  //Calls to location.js function for Google API
   let coordinates
   let updatedAddress
   try {
@@ -90,6 +133,7 @@ async function createPlace(req, res, next) {
     creator: req.userData.userId,
   })
 
+  //Verify valid user logged in
   let validUser
   try {
     validUser = await User.findById(req.userData.userId)
@@ -103,6 +147,7 @@ async function createPlace(req, res, next) {
     return next(error)
   }
 
+  //Start session/transaction to create place and link to user "places" array in db
   try {
     const newSession = await mongoose.startSession()
     newSession.startTransaction()
@@ -121,6 +166,13 @@ async function createPlace(req, res, next) {
   res.status(201).json({ place: createdPlace.toObject({ getters: true }) })
 }
 
+/**
+ * Update existing place from db
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Object} updatedPlace
+ */
 async function updatePlace(req, res, next) {
   const errors = validationResult(req)
 
@@ -131,7 +183,7 @@ async function updatePlace(req, res, next) {
     )
   }
 
-  const { title, description } = req.body
+  const { title, description, address } = req.body
   const placeId = req.params.pid
 
   let updatedPlace
@@ -145,6 +197,7 @@ async function updatePlace(req, res, next) {
     return next(error)
   }
 
+  //Verify logged in user matches place creator
   if (updatedPlace.creator.toString() !== req.userData.userId) {
     const error = new HttpError(
       'You are not authorized to edit this place.',
@@ -153,8 +206,21 @@ async function updatePlace(req, res, next) {
     return next(error)
   }
 
+  //Calls to location.js function for Google API
+  let coordinates
+  let updatedAddress
+  try {
+    const results = await getCoordsForAddress(address)
+    coordinates = results[0]
+    updatedAddress = results[1]
+  } catch (error) {
+    return next(error)
+  }
+
   updatedPlace.title = title
   updatedPlace.description = description
+  updatedPlace.address = updatedAddress
+  updatedPlace.location = coordinates
 
   try {
     await updatedPlace.save()
@@ -166,9 +232,16 @@ async function updatePlace(req, res, next) {
     return next(error)
   }
 
-  res.status(200).json({ place: updatedPlace.toObject({ getters: true }) })
+  res.status(201).json({ place: updatedPlace.toObject({ getters: true }) })
 }
 
+/**
+ * Deletes place form db
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {null}
+ */
 async function deletePlace(req, res, next) {
   const placeId = req.params.pid
 
@@ -188,6 +261,7 @@ async function deletePlace(req, res, next) {
     return next(error)
   }
 
+  //Verify logged in user matches place creator
   if (deletedPlace.creator.id !== req.userData.userId) {
     const error = new HttpError(
       'You are not authorized to delete this place.',
@@ -198,6 +272,7 @@ async function deletePlace(req, res, next) {
 
   const imagePath = deletedPlace.imageUrl
 
+  //Start session/transaction to delete place and unlink from user "places" array in db
   try {
     const newSession = await mongoose.startSession()
     newSession.startTransaction()
@@ -217,10 +292,11 @@ async function deletePlace(req, res, next) {
     //console.log(err)
   })
 
-  res.status(200).json({ message: 'Deleted place.' })
+  res.status(201).json({ message: 'Deleted place.' })
 }
 
 module.exports = {
+  getAllPlaces,
   getPlacesByUserId,
   getPlaceById,
   createPlace,

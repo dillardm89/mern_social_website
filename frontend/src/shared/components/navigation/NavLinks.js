@@ -4,13 +4,21 @@ import { AuthContext } from '../../context/auth-context'
 import Button from '../form-elements/Button'
 import './styles/NavLinks.css'
 
-function NavLinks(props) {
+/**
+ * Component for rendering navigation links element
+ * Props passed down from MainNavigation.js
+ * @returns {React.JSX.Element} NavLinks Element
+ */
+function NavLinks() {
   const auth = useContext(AuthContext)
 
   return (
     <ul className='nav-links'>
       <li>
         <NavLink to='/'>ALL USERS</NavLink>
+      </li>
+      <li>
+        <NavLink to='/all-places'>ALL PLACES</NavLink>
       </li>
       {auth.isLoggedIn && (
         <li>

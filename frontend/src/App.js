@@ -12,6 +12,7 @@ import UpdatePlace from './places/pages/UpdatePlace'
 import Auth from './user/pages/Auth'
 import { AuthContext } from './shared/context/auth-context'
 import { useAuth } from './shared/hooks/auth-hook'
+import AllPlaces from './places/pages/AllPlaces'
 
 function App() {
   const { userId, token, login, logout } = useAuth()
@@ -21,6 +22,7 @@ function App() {
     routes = (
       <Routes>
         <Route path='/' element={<Users />} />
+        <Route path='/all-places' element={<AllPlaces />} />
         <Route path='/:uid/places' element={<UserPlaces />} />
         <Route path='/places/new' element={<NewPlace />} />
         <Route path='/places/:pid' element={<UpdatePlace />} />
@@ -31,6 +33,7 @@ function App() {
     routes = (
       <Routes>
         <Route path='/' element={<Users />} />
+        <Route path='/all-places' element={<AllPlaces />} />
         <Route path='/:uid/places' element={<UserPlaces />} />
         <Route path='/auth' element={<Auth />} />
         <Route path='/*' element={<Navigate replace to='/auth' />} />

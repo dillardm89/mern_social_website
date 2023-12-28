@@ -2,12 +2,21 @@ import React, { useRef, useState, useEffect } from 'react'
 import Button from './Button'
 import './styles/ImageUpload.css'
 
+/**
+ * Component for rendering image upload element
+ * Props passed down from Auth.js or NewPlace.js
+ * @param {Object} props
+ * @param {String} props.id string for setting CSS id
+ * @param {String} props.center string for setting CSS class name
+ * @param {String} props.errorText string to set error message for invalid field entry
+ * @param {() => void} props.onInput callback function for handling input (form-hook.js)
+ * @returns {React.JSX.Element} ImageUpload Element
+ */
 function ImageUpload(props) {
+  const filePickerRef = useRef()
   const [file, setFile] = useState(null)
   const [previewUrl, setPreviewUrl] = useState(null)
   const [isValid, setIsValid] = useState(false)
-
-  const filePickerRef = useRef()
 
   const pickedHandler = (event) => {
     let pickedFile
@@ -58,6 +67,7 @@ function ImageUpload(props) {
           {previewUrl && <img src={previewUrl} alt='preview' />}
           {!previewUrl && <p>Please choose an image.</p>}
         </div>
+
         <Button type='button' onClick={pickImageHandler}>
           Select An Image
         </Button>
