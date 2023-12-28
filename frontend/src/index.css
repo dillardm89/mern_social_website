@@ -1,5 +1,16 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap');
 
+:root {
+  --color-dark-grey: #333333;
+  --color-darkest: #77037b;
+  --color-dark: #210062;
+  --color-medium: #009fbd;
+  --color-medium-grey: #666666;
+  --color-light: #ffd900;
+  --color-light-grey: #999999;
+  --color-off-white: #c8c8c8;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -10,7 +21,7 @@ html {
 
 body {
   margin: 0;
-  background: #4d4d4d;
+  background: var(--color-medium-grey);
 }
 
 .slide-in-left-enter {
