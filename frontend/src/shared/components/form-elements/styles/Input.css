@@ -17,16 +17,16 @@
 .form-control textarea {
   width: 100%;
   font: inherit;
-  border: 1px solid #ccc;
-  background: #f8f8f8;
+  border: 1px solid var(--color-dark-grey);
+  background: var(--color-off-white);
   padding: 0.15rem 0.25rem;
 }
 
 .form-control input:focus,
 .form-control textarea:focus {
   outline: none;
-  background: #ebebeb;
-  border-color: #510077;
+  background: var(--color-light);
+  border-color: var(--color-darkest);
 }
 
 .form-control--invalid label,

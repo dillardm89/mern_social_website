@@ -1,9 +1,12 @@
 .place-item {
   margin: 1rem 0;
+  width: 45%;
+  min-width: 450px;
 }
 
 .place-item__content {
   padding: 0;
+  height: 100%;
 }
 
 .place-item__info {
@@ -29,7 +32,14 @@
   margin: 0 0 0.5rem 0;
 }
 
+.place-item__align-bottom {
+  margin-top: 75px;
+}
+
 .place-item__actions {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
   padding: 1rem;
   text-align: center;
   border-top: 1px solid #ccc;
@@ -56,5 +66,20 @@
 @media (min-width: 768px) {
   .place-item__image {
     height: 20rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .place-item {
+    min-width: 200px;
+    width: 90%;
+  }
+
+  .place-item__align-bottom {
+    margin-top: 0px;
+  }
+
+  .place-item__actions {
+    position: relative;
   }
 }

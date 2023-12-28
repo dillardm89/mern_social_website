@@ -105,20 +105,22 @@ function PlaceItem(props) {
             <p>{props.description}</p>
           </div>
 
-          <div className='place-item__actions'>
-            <Button inverse onClick={openMapHandler}>
-              VIEW ON MAP
-            </Button>
-
-            {auth.userId === props.creatorId && (
-              <Button to={`/places/${props.id}`}>EDIT</Button>
-            )}
-
-            {auth.userId === props.creatorId && (
-              <Button danger onClick={showDeleteWarningHandler}>
-                DELETE
+          <div className='place-item__align-bottom'>
+            <div className='place-item__actions'>
+              <Button inverse onClick={openMapHandler}>
+                VIEW ON MAP
               </Button>
-            )}
+
+              {auth.userId === props.creatorId && (
+                <Button to={`/places/${props.id}`}>EDIT</Button>
+              )}
+
+              {auth.userId === props.creatorId && (
+                <Button danger onClick={showDeleteWarningHandler}>
+                  DELETE
+                </Button>
+              )}
+            </div>
           </div>
         </Card>
       </li>

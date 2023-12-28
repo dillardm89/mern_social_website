@@ -72,8 +72,6 @@ function ImageUpload(props) {
           Select An Image
         </Button>
       </div>
-
-      {!isValid && <p>{props.errorText}</p>}
     </div>
   )
 }
