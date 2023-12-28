@@ -15,7 +15,11 @@ import {
 import { AuthContext } from '../../shared/context/auth-context'
 import '../styles/Auth.css'
 
-function Auth(props) {
+/**
+ * Page for rendering user sign up or login
+ * @returns {React.JSX.Element} Auth Element
+ */
+function Auth() {
   const auth = useContext(AuthContext)
   const API_URL = process.env.REACT_APP_API_URL
   const [isLoginMode, setIsLoginMode] = useState(true)

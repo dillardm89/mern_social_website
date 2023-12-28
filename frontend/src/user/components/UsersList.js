@@ -3,6 +3,14 @@ import UserItem from './UserItem'
 import Card from '../../shared/components/ui-elements/Card'
 import '../styles/UsersList.css'
 
+/**
+ * Component for rendering a list of user items
+ * Props passed down from Users.js
+ * @param {Object} props
+ * @param {Array} props.items array of objects contain user data
+ * @returns {Object} user containing data passed as props to UserItem.js
+ * @returns {React.JSX.Element} UsersList Element
+ */
 function UsersList(props) {
   if (props.items.length === 0) {
     return (

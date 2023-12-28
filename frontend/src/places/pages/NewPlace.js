@@ -14,6 +14,10 @@ import LoadingSpinner from '../../shared/components/ui-elements/LoadingSpinner'
 import ImageUpload from '../../shared/components/form-elements/ImageUpload'
 import '../styles/PlaceForm.css'
 
+/**
+ * Page for rendering form to create new place
+ * @returns {React.JSX.Element} NewPlace Element
+ */
 function NewPlace() {
   const navigate = useNavigate()
   const auth = useContext(AuthContext)

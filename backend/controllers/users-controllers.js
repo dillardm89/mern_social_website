@@ -6,6 +6,13 @@ const HttpError = require('../models/http-error')
 const User = require('../models/user')
 const PRIVATE_KEY = process.env.TOKEN_PRIVATE_KEY
 
+/**
+ * Retrieves all users from db then maps for frontend rendering
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Array} allUsers
+ */
 async function getAllUsers(req, res, next) {
   let allUsers
   try {
@@ -20,6 +27,13 @@ async function getAllUsers(req, res, next) {
     .json({ users: allUsers.map((user) => user.toObject({ getters: true })) })
 }
 
+/**
+ * Create new user in db and create token
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Object} userId, email, token
+ */
 async function signupUser(req, res, next) {
   const errors = validationResult(req)
 
@@ -32,6 +46,7 @@ async function signupUser(req, res, next) {
 
   const { name, email, password } = req.body
 
+  //Verify user does not already exist in db
   let existingUser
   try {
     existingUser = await User.findOne({ email: email })
@@ -72,6 +87,7 @@ async function signupUser(req, res, next) {
     return next(error)
   }
 
+  //Create token for authentication/authorization to use protected routes/features
   let token
   try {
     token = jwt.sign(
@@ -92,9 +108,17 @@ async function signupUser(req, res, next) {
     .json({ userId: createdUser.id, email: createdUser.email, token: token })
 }
 
+/**
+ * Validate user exists in db and create token
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Object} userId, email, token
+ */
 async function loginUser(req, res, next) {
   const { email, password } = req.body
 
+  //Verify user exists in db
   let existingUser
   try {
     existingUser = await User.findOne({ email: email })
@@ -111,6 +135,7 @@ async function loginUser(req, res, next) {
     return next(error)
   }
 
+  //Validate password matches with db
   let isValidPassword = false
   try {
     isValidPassword = await bcrypt.compare(password, existingUser.password)
@@ -131,6 +156,7 @@ async function loginUser(req, res, next) {
     return next(error)
   }
 
+  //Create token for authentication/authorization to use protected routes/features
   let token
   try {
     token = jwt.sign(

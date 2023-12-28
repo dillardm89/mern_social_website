@@ -1,6 +1,16 @@
 import React, { useRef, useEffect } from 'react'
 import './styles/Map.css'
 
+/**
+ * Component for rendering error modal element
+ * Props passed down from various other components
+ * @param {Object} props
+ * @param {String} props.style string for setting in-line CSS styling
+ * @param {String} props.className string for setting CSS class name
+ * @param {String} props.zoom string for map zoom setting
+ * @param {Object} props.center coordinates (lat, lng) for map center location
+ * @returns {Object} Google Map Element
+ */
 function Map(props) {
   const mapRef = useRef()
   const { center, zoom } = props

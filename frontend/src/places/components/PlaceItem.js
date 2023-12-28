@@ -9,6 +9,20 @@ import { AuthContext } from '../../shared/context/auth-context'
 import { useHttpClient } from '../../shared/hooks/http-hook'
 import '../styles/PlaceItem.css'
 
+/**
+ * Component for showing details of specific place
+ * Props passed down from PlaceList.js
+ * @param {Object} props
+ * @param {String} props.id string of place ID
+ * @param {String} props.title string of place title
+ * @param {String} props.address string of place address
+ * @param {String} props.image string uri of the place image
+ * @param {String} props.description string of place description
+ * @param {String} props.creatorId string of place creator's ID
+ * @param {Object} props.coordinates object containing place geolocation (lat, lng)
+ * @param {() => void} props.onDelete callback to function for deleting place (UserPlaces.js)
+ * @returns {React.JSX.Element} PlaceItem Element
+ */
 function PlaceItem(props) {
   const auth = useContext(AuthContext)
   const API_URL = process.env.REACT_APP_API_URL

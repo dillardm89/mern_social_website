@@ -3,6 +3,13 @@ const jwt = require('jsonwebtoken')
 const HttpError = require('../models/http-error')
 const PRIVATE_KEY = process.env.TOKEN_PRIVATE_KEY
 
+/**
+ * Validate token for accessing protected routes/features
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Boolean}
+ */
 function checkValidToken(req, res, next) {
   if (req.method === 'OPTIONS') {
     return next()

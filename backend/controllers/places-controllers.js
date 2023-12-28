@@ -7,6 +7,13 @@ const Place = require('../models/place')
 const User = require('../models/user')
 const { getCoordsForAddress } = require('../utils/location')
 
+/**
+ * Retrieves all places from db then maps for frontend rendering
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Array} allPlaces
+ */
 async function getAllPlaces(req, res, next) {
   let allPlaces
   try {
@@ -21,6 +28,13 @@ async function getAllPlaces(req, res, next) {
   })
 }
 
+/**
+ * Retrieves all places for specific user from db then maps for frontend rendering
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Array} userPlaces
+ */
 async function getPlacesByUserId(req, res, next) {
   const userId = req.params.uid
 
@@ -48,6 +62,13 @@ async function getPlacesByUserId(req, res, next) {
   })
 }
 
+/**
+ * Retrieves specific place by ID from db for frontend rendering
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Object} specificPlace
+ */
 async function getPlaceById(req, res, next) {
   const placeId = req.params.pid
 
@@ -73,6 +94,13 @@ async function getPlaceById(req, res, next) {
   res.json({ place: specificPlace.toObject({ getters: true }) })
 }
 
+/**
+ * Create new place and store in db
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Object} createdPlace
+ */
 async function createPlace(req, res, next) {
   const errors = validationResult(req)
 
@@ -85,6 +113,7 @@ async function createPlace(req, res, next) {
 
   const { title, description, address } = req.body
 
+  //Calls to location.js function for Google API
   let coordinates
   let updatedAddress
   try {
@@ -104,6 +133,7 @@ async function createPlace(req, res, next) {
     creator: req.userData.userId,
   })
 
+  //Verify valid user logged in
   let validUser
   try {
     validUser = await User.findById(req.userData.userId)
@@ -117,6 +147,7 @@ async function createPlace(req, res, next) {
     return next(error)
   }
 
+  //Start session/transaction to create place and link to user "places" array in db
   try {
     const newSession = await mongoose.startSession()
     newSession.startTransaction()
@@ -135,6 +166,13 @@ async function createPlace(req, res, next) {
   res.status(201).json({ place: createdPlace.toObject({ getters: true }) })
 }
 
+/**
+ * Update existing place from db
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Object} updatedPlace
+ */
 async function updatePlace(req, res, next) {
   const errors = validationResult(req)
 
@@ -159,6 +197,7 @@ async function updatePlace(req, res, next) {
     return next(error)
   }
 
+  //Verify logged in user matches place creator
   if (updatedPlace.creator.toString() !== req.userData.userId) {
     const error = new HttpError(
       'You are not authorized to edit this place.',
@@ -167,6 +206,7 @@ async function updatePlace(req, res, next) {
     return next(error)
   }
 
+  //Calls to location.js function for Google API
   let coordinates
   let updatedAddress
   try {
@@ -195,6 +235,13 @@ async function updatePlace(req, res, next) {
   res.status(201).json({ place: updatedPlace.toObject({ getters: true }) })
 }
 
+/**
+ * Deletes place form db
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {null}
+ */
 async function deletePlace(req, res, next) {
   const placeId = req.params.pid
 
@@ -214,6 +261,7 @@ async function deletePlace(req, res, next) {
     return next(error)
   }
 
+  //Verify logged in user matches place creator
   if (deletedPlace.creator.id !== req.userData.userId) {
     const error = new HttpError(
       'You are not authorized to delete this place.',
@@ -224,6 +272,7 @@ async function deletePlace(req, res, next) {
 
   const imagePath = deletedPlace.imageUrl
 
+  //Start session/transaction to delete place and unlink from user "places" array in db
   try {
     const newSession = await mongoose.startSession()
     newSession.startTransaction()

@@ -4,6 +4,11 @@ import ErrorModal from '../../shared/components/ui-elements/ErrorModal'
 import LoadingSpinner from '../../shared/components/ui-elements/LoadingSpinner'
 import PlaceList from '../components/PlaceList'
 
+/**
+ * Page for rendering all places
+ * @returns {Array} items containing place objects passed as props to PlaceList.js
+ * @returns {React.JSX.Element} AllPlaces Element
+ */
 function AllPlaces() {
   const API_URL = process.env.REACT_APP_API_URL
   const { isLoading, isError, sendRequest, clearError } = useHttpClient()

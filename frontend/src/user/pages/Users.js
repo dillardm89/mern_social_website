@@ -4,6 +4,11 @@ import UsersList from '../components/UsersList'
 import ErrorModal from '../../shared/components/ui-elements/ErrorModal'
 import LoadingSpinner from '../../shared/components/ui-elements/LoadingSpinner'
 
+/**
+ * Page for rendering all users
+ * @returns {Array} items containing user objects passed as props to UsersList.js
+ * @returns {React.JSX.Element} Users Element
+ */
 function Users() {
   const API_URL = process.env.REACT_APP_API_URL
   const { isLoading, isError, sendRequest, clearError } = useHttpClient()

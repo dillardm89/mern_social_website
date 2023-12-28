@@ -5,7 +5,13 @@ import ErrorModal from '../../shared/components/ui-elements/ErrorModal'
 import LoadingSpinner from '../../shared/components/ui-elements/LoadingSpinner'
 import { useHttpClient } from '../../shared/hooks/http-hook'
 
-function UserPlaces(props) {
+/**
+ * Page for rendering all places for specific user
+ * @callback onDeletePlace function passed as prop to PlaceList.js
+ * @returns {Array} items containing place objects passed as props to PlaceList.js
+ * @returns {React.JSX.Element} UserPlaces Element
+ */
+function UserPlaces() {
   const userId = useParams().uid
   const API_URL = process.env.REACT_APP_API_URL
   const { isLoading, isError, sendRequest, clearError } = useHttpClient()

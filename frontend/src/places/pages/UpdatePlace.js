@@ -14,7 +14,11 @@ import { useHttpClient } from '../../shared/hooks/http-hook'
 import { AuthContext } from '../../shared/context/auth-context'
 import '../styles/PlaceForm.css'
 
-function UpdatePlace(props) {
+/**
+ * Page for rendering form to update existing place
+ * @returns {React.JSX.Element} UpdatePlace Element
+ */
+function UpdatePlace() {
   const navigate = useNavigate()
   const placeId = useParams().pid
   const auth = useContext(AuthContext)
