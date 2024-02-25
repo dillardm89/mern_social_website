@@ -1,0 +1,86 @@
+[
+  {
+    "title": "Empire State Building",
+    "description": "One of the most famous sky scrapers in the world!",
+    "address": "20 W 34th St, New York, NY 10001",
+    "imageUrl": "",
+    "creator": ""
+  },
+  {
+    "title": "Leaning Tower of Pisa",
+    "description": "Crazy four-degree leaning tower!",
+    "address": "Piazza del Duomo, 56126 Pisa PI, Italy",
+    "imageUrl": "",
+    "creator": ""
+  },
+  {
+    "title": "Eiffel Tower",
+    "description": "Tower as tall as an 81-story building! The tallest in Paris!",
+    "address": "Champ de Mars, 5 Av. Anatole France, 75007 Paris, France",
+    "imageUrl": "",
+    "creator": ""
+  },
+  {
+    "title": "Grand Canyon",
+    "description": "Giant canyon carved by the Colorado River.",
+    "address": "20 South Entrance Road Grand Canyon, AZ 86023",
+    "imageUrl": "",
+    "creator": ""
+  },
+  {
+    "title": "The Colosseum",
+    "description": "Ancient Roman amphitheatre from 80AD.",
+    "address": "Piazza del Colosseo, 1, 00184 Roma RM, Italy",
+    "imageUrl": "",
+    "creator": ""
+  },
+  {
+    "title": "Niagara Falls",
+    "description": "Three massive water falls between the USA and Canada.",
+    "address": "24 Buffalo Ave., Niagara Falls, NY, 14303",
+    "imageUrl": "",
+    "creator": ""
+  },
+  {
+    "title": "Statue of Liberty",
+    "description": "305-foot tall statue personifying liberty.",
+    "address": "Liberty Island, New York, NY 10004",
+    "imageUrl": "",
+    "creator": ""
+  },
+  {
+    "title": "Stonehenge",
+    "description": "Prehistoric stone circle monument over 5,000 years old!",
+    "address": "Salisbury SP4 7DE, UK",
+    "imageUrl": "",
+    "creator": ""
+  },
+  {
+    "title": "Taj Mahal",
+    "description": "Ivory-white marble mausoleum in Agra.",
+    "address": "Dharmapuri, Forest Colony, Tajganj, Agra, Uttar Pradesh 282001, India",
+    "imageUrl": "",
+    "creator": ""
+  },
+  {
+    "title": "Burj Khalifa",
+    "description": "The tallest building in the world - 828 meters!",
+    "address": "1 Sheikh Mohammed bin Rashid Blvd, Dubai, UAE",
+    "imageUrl": "",
+    "creator": ""
+  },
+  {
+    "title": "Great Pyramid",
+    "description": "Largest and oldest of three pyramids in Giza.",
+    "address": "Al Haram, Nazlet El-Semman, Al Haram, Giza Governorate 3512201, Egypt",
+    "imageUrl": "",
+    "creator": ""
+  },
+  {
+    "title": "Alcatraz",
+    "description": "Famous federal prison located on an island in San Francisco Bay.",
+    "address": "Alcatraz Island, San Francisco, CA",
+    "imageUrl": "",
+    "creator": ""
+  }
+]

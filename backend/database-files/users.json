@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Jane Smith",
+    "email": "mrssmith@jane.com",
+    "password": "ILoveMrSmith123!",
+    "imageUrl": "",
+    "places": []
+  },
+  {
+    "name": "John Smith",
+    "email": "john@smith.com",
+    "password": "ILoveJane999!",
+    "imageUrl": "",
+    "places": []
+  },
+  {
+    "name": "Ella Johnson",
+    "email": "ejohnson@mail.com",
+    "password": "jad=Drazay3s",
+    "imageUrl": "",
+    "places": []
+  },
+  {
+    "name": "David Thomas",
+    "email": "thomas_david@webmail.com",
+    "password": "steco2hlWrl_",
+    "imageUrl": "",
+    "places": []
+  },
+  {
+    "name": "Matilda Page",
+    "email": "matildapage@email.com",
+    "password": "xOv+@5ph&sTa",
+    "imageUrl": "",
+    "places": []
+  },
+  {
+    "name": "Jeremy Rogers",
+    "email": "rogers@jeremy.com",
+    "password": "?rlfr#S2&wap",
+    "imageUrl": "",
+    "places": []
+  }
+]
