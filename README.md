@@ -3,12 +3,6 @@ Social website for sharing places using MERN
 
 ![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHpya2U3d3VmenZ2NDJkMGRtbjFqZ2M2bHVmd3ZmdzlsM2V1NGFhcSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/qemgG2GcgC4R1u7sHZ/giphy.gif)
 
-### Run Project:
-
-- Set up MongoDB using json files in 'backend/database-files' (runs on localhost:27017)
-- From 'frontend' directory: 'npm start' (runs on localhost:3000)
-- From 'backend' directory: 'npm start' (runs on localhost:5000)
-
 ### Project Specifications:
 
 - Create a social website for users to share places (image and location)
