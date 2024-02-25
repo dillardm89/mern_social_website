@@ -30,7 +30,7 @@ Social website for sharing places using MERN
 
 - cd to 'backend' directory
 - 'npm install' to install necessary modules from package.json
-- cd to 'frontend' director
+- cd to 'frontend' directory
 - 'npm install' to install necessary modules from package.json
 
 ### .env Variables Required for Frontend
