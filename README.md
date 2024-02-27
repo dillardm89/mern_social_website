@@ -6,7 +6,6 @@ Social website for sharing places using MERN
 ### Project Specifications:
 
 - Create a social website for users to share places (image and location)
-- Add website to GitHub to continue building portfolio
 
 ### Technical Requirements:
 
