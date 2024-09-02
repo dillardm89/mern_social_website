@@ -22,24 +22,21 @@ Social website for sharing places using MERN
 
 ### MongoDB
 
-- Create a database 'places' with two (2) collection named: places and users
+- Create a database 'places' with two (2) collections named: places and users
 - Import data from 'database-files': places.json and users.json
 
-### Node_Modules
+### Frontend
 
-- cd to 'backend' directory
-- 'npm install' to install necessary modules from package.json
-- cd to 'frontend' directory
-- 'npm install' to install necessary modules from package.json
+```bash
+cd frontend
+npm install
+npm start
+```
 
-### .env Variables Required for Frontend
+### Backend
 
-- REACT_APP_API_URL = 'http://localhost:5000'
-- REACT_APP_HOST_PORT = 3000
-- REACT_APP_MAPS_APIKEY = 'your_api_token_here'
-
-## .env Variables Required for Backend
-
-- HOST_PORT = 5000
-- GOOGLE_GEOCODE_APIKEY = 'your_api_token_here'
-- TOKEN_PRIVATE_KEY = 'your_private_key_here'
+```bash
+cd backend
+npm install
+npm start
+```
